@@ -1,5 +1,6 @@
 # Task-und-Zeiterfassungstool-
-Ein vielseitiges Task- und Zeiterfassungstool mit CLI- und GUI-Funktionalität, das SQLite zur Speicherung verwendet. Ideal für persönliche oder kleine Projekt-Workflows.
+Ein vielseitiges Task- und Zeiterfassungstool mit CLI- und NerdigerGUI-Funktionalität, das SQLite zur Speicherung verwendet. Ideal für persönliche oder kleine Projekt-Workflows.
+Auch die GUI ist eine shell :)  
 --
 # Task Manager Tool
 
@@ -17,12 +18,25 @@ Ein vielseitiges Task- und Zeiterfassungstool mit einer benutzerfreundlichen CLI
   - `report`: Generiert einen Bericht über alle Sessions.
   - `collwin` (nur GUI): Klappt das Ausgabefeld ein oder aus.
 
-- **GUI-Eigenschaften**
+- **NERD-GUI-Eigenschaften**
   - Schwarzer Hintergrund mit VGA-Orange (#ffb347) als Textfarbe.
   - Minimales Zeilen-Spacing für eine klare Übersicht.
   - <Tab>-Taste zur einfachen Autovervollständigung.
   - Minimieren statt Schließen durch das Fenster-Icon (X).
   - `exit`: Beendet die GUI und die Anwendung vollständig.
+  
+  ** Normale GUI Größe **
+  - **Breite:** 600 Pixel
+  - **Höhe:** 400 Pixel
+
+  ** Eingeklappte Größe (`collwin`) **
+  - **Breite:** 600 Pixel
+  - **Höhe:** 100 Pixel
+
+## GUI Screenshot
+Hier ist ein Beispiel, wie die GUI aussieht:
+
+![GUI Screenshot](assets/screen-gui.png)
 
 - **Datenbank**
   - SQLite (tasks.db) speichert Tasks und Sessions.
