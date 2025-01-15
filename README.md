@@ -1,84 +1,96 @@
-# Task-und-Zeiterfassungstool-
-Ein vielseitiges Task- und Zeiterfassungstool mit CLI- und NerdigerGUI-Funktionalität, das SQLite zur Speicherung verwendet. Ideal für persönliche oder kleine Projekt-Workflows.
-Auch die GUI ist eine shell :)  
---
-# Task Manager Tool
+# Task- und Zeiterfassungstool
+
+Ein vielseitiges Task- und Zeiterfassungstool mit CLI- und minimalistischer Nerd-GUI. Ideal für persönliche oder kleine Projekt-Workflows.
 
 ## Beschreibung
 
-Ein vielseitiges Task- und Zeiterfassungstool mit einer benutzerfreundlichen CLI und einer minimalistischen GUI.
+Ein flexibles Tool für Aufgaben- und Zeiterfassung mit benutzerfreundlicher CLI und nerdiger GUI.
 
 ### Funktionen
-- **CLI-Kommandos**
-  - `add <taskname> [minuten]`: Neuen Task hinzufügen mit optionaler Mindestdauer pro Session.
-  - `start <taskname>`: Startet einen Task.
-  - `stop <taskname>`: Stoppt einen Task und speichert die Dauer der Session.
-  - `delete <taskname>`: Löscht einen Task nach Bestätigung.
-  - `list`: Zeigt eine Übersicht aller Tasks und deren Status.
-  - `report`: Generiert einen Bericht über alle Sessions.
-  - `collwin` (nur GUI): Klappt das Ausgabefeld ein oder aus.
 
-- **NERD-GUI-Eigenschaften**
-  - Schwarzer Hintergrund mit VGA-Orange (#ffb347) als Textfarbe.
-  - Minimales Zeilen-Spacing für eine klare Übersicht.
-  - <Tab>-Taste zur einfachen Autovervollständigung.
-  - Minimieren statt Schließen durch das Fenster-Icon (X).
-  - `exit`: Beendet die GUI und die Anwendung vollständig.
-  
-  ** Normale GUI Größe **
-  - **Breite:** 600 Pixel
-  - **Höhe:** 400 Pixel
+#### CLI-Kommandos
+- `add <taskname> [minuten]`: Neuen Task hinzufügen mit optionaler Mindestdauer pro Session.
+- `start <taskname>`: Startet einen Task.
+- `stop <taskname>`: Stoppt einen Task und speichert die Dauer der Session.
+- `delete <taskname>`: Löscht einen Task nach Bestätigung.
+- `list`: Zeigt eine Übersicht aller Tasks und deren Status.
+- `report [start=<YYYY-MM-DD> end=<YYYY-MM-DD> task=<taskname>]`: Generiert einen Bericht über Tasks und Sessions (optional mit Filtern).
+- `export <output_path> [start=<YYYY-MM-DD> end=<YYYY-MM-DD> task=<taskname>]`: Exportiert einen HTML-Bericht (optional mit Filtern).
+- `collwin` (nur GUI): Klappt das Ausgabefeld ein oder aus.
 
-  ** Eingeklappte Größe (`collwin`) **
-  - **Breite:** 600 Pixel
-  - **Höhe:** 100 Pixel
+#### GUI-Eigenschaften
+- **GUI starten:** main.py gui 
+- **Design:** Schwarzer Hintergrund mit VGA-Orange (#ffb347) als Textfarbe.
+- **Minimierung:** Minimiert Fenster statt es zu schließen.
+- **Eingeklappte Größe (`collwin`)**:
+  - Breite: 600 Pixel
+  - Höhe: 100 Pixel
+- **Normale Größe:**
+  - Breite: 600 Pixel
+  - Höhe: 400 Pixel
 
-## GUI Screenshot
-Hier ist ein Beispiel, wie die GUI aussieht:
-
-![GUI Screenshot](assets/screen-gui.png)
-
-- **Datenbank**
-  - SQLite (tasks.db) speichert Tasks und Sessions.
-  - Tabellenstruktur:
-    - `tasks(id, name, is_running, current_start, minimum_minutes)`
-    - `sessions(id, task_id, start, end, duration_sec)`
-
----
+#### Datenbank
+- SQLite-basierte Speicherung (`tasks.db`).
+- **Automatische Erstellung:** Die Datenbank wird automatisch erstellt, falls sie nicht existiert.
+- Tabellenstruktur:
+  - `tasks(id, name, is_running, current_start, minimum_minutes)`
+  - `sessions(id, task_id, start, end, duration_sec)`
 
 ## Installation
 
 ### Voraussetzungen
-- Python 3.7 oder neuer
-- SQLite (kommt normalerweise mit Python)
+- **Python 3.7 oder neuer** (inklusive Standardmodule: `sqlite3`, `tkinter`, `datetime`)
+- Zusätzliche Python-Pakete:
+  - `jinja2`: Für HTML-Template-Rendering
 
-### Installation
-1. Klone dieses Repository:
-   ```bash
-   git clone https://github.com/username/task-manager-tool.git
+### Installation der Abhängigkeiten
+#### Linux:
+```bash
+sudo apt update && sudo apt install python3 python3-pip python3-tk
+pip3 install jinja2
+```
+
+#### Windows:
+1. Installiere Python:
+   - [Python herunterladen und installieren](https://www.python.org/downloads/)
+   - Während der Installation die Option „Add Python to PATH“ aktivieren.
+2. Installiere die Abhängigkeiten:
+   ```cmd
+   pip install jinja2
    ```
 
+### Überprüfung der Installation
+- **Prüfen, ob `tkinter` installiert ist:**
+  ```bash
+  python3 -m tkinter
+  ```
+  Wenn sich ein kleines Fenster öffnet, ist `tkinter` korrekt installiert.
+
+### Installation des Tools
+1. Repository klonen:
+   ```bash
+   git clone https://github.com/robatsh/Task-und-Zeiterfassungstool.git
+   ```
 2. Navigiere ins Projektverzeichnis:
    ```bash
    cd task-manager-tool
    ```
-
 3. Starte das Programm:
    ```bash
    python3 main.py
    ```
 
----
-
 ## Verwendung
 
 ### CLI-Kommandos
+
 Beispiele:
 ```bash
 python3 main.py add "Task 1" 15
 python3 main.py start "Task 1"
 python3 main.py stop "Task 1"
-python3 main.py report
+python3 main.py report start=2025-01-01 end=2025-01-15 task=Task1
+python3 main.py export ./report.html start=2025-01-01 end=2025-01-15
 ```
 
 ### GUI starten
@@ -86,23 +98,15 @@ python3 main.py report
 python3 main.py gui
 ```
 
----
-
 ## Lizenz
 
-Dieses Projekt steht unter der **GNU General Public License v3.0 (GPL-3.0)**. Sie erlaubt:
-- Private und kommerzielle Nutzung
-- Modifikation und Weitergabe
-- Open Source bleibt Pflicht, und die ursprüngliche Quelle muss genannt werden.
+Dieses Projekt steht unter der **GNU General Public License v3.0 (GPL-3.0)**. 
 
 Details zur Lizenz findest du in der Datei `LICENSE`.
 
----
-
 ## Warnung
-Dieses Projekt befindet sich noch in der Entwicklung. Der Einsatz erfolgt auf eigene Gefahr. Für Fehler oder Datenverlust wird keine Haftung übernommen.
 
----
+Dieses Projekt befindet sich noch in der Entwicklung. Der Einsatz erfolgt auf eigene Gefahr. Für Fehler oder Datenverlust wird keine Haftung übernommen.
 
 ## GitHub Setup
 
@@ -122,3 +126,5 @@ Dieses Projekt befindet sich noch in der Entwicklung. Der Einsatz erfolgt auf ei
 ### Weiterentwicklung
 - Erstelle Pull Requests für Änderungen.
 - Dokumentiere größere Änderungen im `CHANGELOG.md`.
+
+---
