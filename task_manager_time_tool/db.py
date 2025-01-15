@@ -1,6 +1,7 @@
 import sqlite3
 import tkinter.messagebox as messagebox
-import datetime
+import datetime, os
+from jinja2 import Template
 
 DB_NAME = "tasks.db"
 
@@ -150,23 +151,126 @@ def list_tasks(output_func=print):
         status = "läuft" if is_running else "inaktiv"
         output_func(f"Task: {name}, Status: {status}, Mindest-Minuten: {min_minutes}")
 
-def report_tasks(output_func=print):
+def report_tasks_filtered(start_date=None, end_date=None, task_name=None, output_func=print):
+    """
+    Generiert einen Bericht basierend auf optionalem Zeitraum und Task.
+
+    :param start_date: Startdatum (YYYY-MM-DD)
+    :param end_date: Enddatum (YYYY-MM-DD)
+    :param task_name: Name des Tasks (optional)
+    :param output_func: Funktion für die Ausgabe (z. B. print)
+    """
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
-    cur.execute("SELECT id, name, minimum_minutes FROM tasks")
-    tasks = cur.fetchall()
 
-    if not tasks:
-        output_func("Keine Tasks vorhanden.")
+    task_filter = ""
+    params = []
+
+    if task_name:
+        task_filter += " AND t.name = ?"
+        params.append(task_name)
+
+    if start_date:
+        task_filter += " AND s.start >= ?"
+        params.append(start_date)
+
+    if end_date:
+        task_filter += " AND s.end <= ?"
+        params.append(end_date)
+
+    query = f"""
+        SELECT t.name, s.start, s.end, s.duration_sec
+        FROM tasks t
+        JOIN sessions s ON t.id = s.task_id
+        WHERE 1=1 {task_filter}
+        ORDER BY s.start ASC
+    """
+
+    cur.execute(query, params)
+    sessions = cur.fetchall()
+
+    if not sessions:
+        output_func("Keine Sitzungen gefunden.")
         conn.close()
         return
 
-    for task_id, name, min_minutes in tasks:
-        output_func(f"Task: {name} (Mindest-Minuten: {min_minutes})")
-        cur.execute("SELECT start, end, duration_sec FROM sessions WHERE task_id = ?", (task_id,))
-        sessions = cur.fetchall()
-        for start, end, duration in sessions:
-            adjusted_duration = max(duration, min_minutes * 60)
-            output_func(f"  Start: {start}, Ende: {end}, Dauer: {adjusted_duration / 60:.2f} Minuten")
+    output_func("Bericht:")
+    for task_name, start, end, duration_sec in sessions:
+        duration_min = duration_sec / 60
+        output_func(f"Task: {task_name}, Start: {start}, Ende: {end}, Dauer: {duration_min:.2f} Minuten")
 
     conn.close()
+
+def export_report_to_html(output_path=None, start_date=None, end_date=None, task_name=None):
+    """
+    Exportiert den Bericht als HTML.
+
+    :param output_path: Pfad für die HTML-Datei (optional, Standard: "./report_<timestamp>.html")
+    :param start_date: Startdatum (YYYY-MM-DD)
+    :param end_date: Enddatum (YYYY-MM-DD)
+    :param task_name: Name des Tasks (optional)
+    """
+    from jinja2 import Template  # Sicherstellen, dass Template verfügbar ist
+
+    # Generiere einen einzigartigen Dateinamen, falls keiner angegeben wurde
+    if not output_path:
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        output_path = f"./report_{timestamp}.html"
+
+    conn = sqlite3.connect(DB_NAME)
+    cur = conn.cursor()
+
+    # Filterlogik für SQL-Abfrage
+    task_filter = ""
+    params = []
+
+    if task_name:
+        task_filter += " AND t.name = ?"
+        params.append(task_name)
+
+    if start_date:
+        task_filter += " AND s.start >= ?"
+        params.append(start_date)
+
+    if end_date:
+        task_filter += " AND s.end <= ?"
+        params.append(end_date)
+
+    query = f"""
+        SELECT t.name, s.start, s.end, s.duration_sec
+        FROM tasks t
+        JOIN sessions s ON t.id = s.task_id
+        WHERE 1=1 {task_filter}
+        ORDER BY s.start ASC
+    """
+
+    cur.execute(query, params)
+    sessions = cur.fetchall()
+
+    conn.close()
+
+    if not sessions:
+        print("Keine Sitzungen gefunden.")
+        return
+
+    # Template aus externer Datei laden
+    try:
+        with open("template_report.html", "r", encoding="utf-8") as template_file:
+            template_content = template_file.read()
+    except FileNotFoundError:
+        print("Template-Datei 'template_report.html' wurde nicht gefunden.")
+        return
+
+    template = Template(template_content)
+    html_content = template.render(sessions=sessions)
+
+    # Sicherstellen, dass die Datei nicht überschrieben wird
+    if os.path.exists(output_path):
+        print(f"Die Datei '{output_path}' existiert bereits. Bericht wird nicht überschrieben.")
+        return
+
+    with open(output_path, "w", encoding="utf-8") as html_file:
+        html_file.write(html_content)
+
+    print(f"Bericht wurde erfolgreich als HTML exportiert: {output_path}")
+
