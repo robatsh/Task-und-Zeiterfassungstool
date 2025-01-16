@@ -5,9 +5,9 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 ## [Unreleased]
 - Kleinere Fehlerbehebungen und Verbesserungen.
 
-## - 2025-01-16
+## [1.1.0] - 2025-01-16
 ### Aktualisiert
-- .gitignore Datei hinzugefügt(Wurde vergessen im Changelog zu erwähnen)
+- .gitignore Datei hinzugefügt
 
 ## [1.1.0] - 2025-01-15
 ### Hinzugefügt
