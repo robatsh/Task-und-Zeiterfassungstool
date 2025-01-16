@@ -1,32 +1,32 @@
 # Changelog
 
-Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
+Alle wichtigen Ã„nderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
 ## [Unreleased]
 - Kleinere Fehlerbehebungen und Verbesserungen.
 
 ## - 2025-01-16
 ### Aktualisiert
-- .gitignore Datei hinzugefügt(Wurde vergessen im Changelog zu erwähnen)
+- .gitignore Datei hinzugefÃ¼gt(Wurde vergessen im Changelog zu erwÃ¤hnen)
 
 ## [1.1.0] - 2025-01-15
-### Hinzugefügt
-- **Reporting-Filter:** Berichtsfunktionen erweitert, um Filter für `start=`, `end=` und `task=` zu unterstützen.
-- **HTML-Export:** Möglichkeit, Berichte als HTML mit dynamischem Dateinamen (`report_<timestamp>.html`) zu exportieren.
+### HinzugefÃ¼gt
+- **Reporting-Filter:** Berichtsfunktionen erweitert, um Filter fÃ¼r `start=`, `end=` und `task=` zu unterstÃ¼tzen.
+- **HTML-Export:** MÃ¶glichkeit, Berichte als HTML mit dynamischem Dateinamen (`report_<timestamp>.html`) zu exportieren.
 - **Externe Template-Datei:** HTML-Template aus dem Code ausgelagert und in `template_report.html` integriert.
-- **Installationsanweisungen:** Vollständige Installations- und Abhängigkeitsliste in das README aufgenommen.
-- **Datenbank-Erstellung:** Hinweis hinzugefügt, dass die SQLite-Datenbank automatisch erstellt wird, wenn sie nicht vorhanden ist.
+- **Installationsanweisungen:** VollstÃ¤ndige Installations- und AbhÃ¤ngigkeitsliste in das README aufgenommen.
+- **Datenbank-Erstellung:** Hinweis hinzugefÃ¼gt, dass die SQLite-Datenbank automatisch erstellt wird, wenn sie nicht vorhanden ist.
 
 ### Behoben
 - Task-Filter im Reporting korrigiert, sodass Berichte nur die relevanten Tasks enthalten.
-- Standardpfad-Handling für den Export, um Konflikte und unvollständige Angaben zu vermeiden.
+- Standardpfad-Handling fÃ¼r den Export, um Konflikte und unvollstÃ¤ndige Angaben zu vermeiden.
 
 ## [1.0.0] - 2025-01-14
-### Hinzugefügt
-- **Task-Verwaltung:** CLI-Kommandos für `add`, `start`, `stop`, `delete`, `list` und `report`.
-- **GUI:** Minimalistische GUI mit VGA-Orange (#ffb347) und CLI-ähnlicher Funktionalität.
+### HinzugefÃ¼gt
+- **Task-Verwaltung:** CLI-Kommandos fÃ¼r `add`, `start`, `stop`, `delete`, `list` und `report`.
+- **GUI:** Minimalistische GUI mit VGA-Orange (#ffb347) und CLI-Ã¤hnlicher FunktionalitÃ¤t.
 - **SQLite-Datenbank:** Speicherung von Tasks und Sessions mit automatischer Verwaltung der Tabellenstruktur.
 
 ---
 
-**Hinweis:** Änderungen an diesem Projekt werden in der [GitHub](https://github.com/robatsh/Task-und-Zeiterfassungstool detailliert dokumentiert.
+**Hinweis:** Ã„nderungen an diesem Projekt werden in der [GitHub](https://github.com/robatsh/Task-und-Zeiterfassungstool detailliert dokumentiert.
