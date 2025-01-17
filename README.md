@@ -26,6 +26,7 @@ Ein flexibles Tool für Aufgaben- und Zeiterfassung mit benutzerfreundlicher CLI
 - **Minimierung:** Minimiert Fenster in die System-Tray statt es zu schließen.
 - **Plattformunterstützung:**
   - **Linux:**  ggf. Installation von `libappindicator3-1` erforderlich (z. B. über `sudo apt install libappindicator3-1`).
+    - [Installation des Tray-Icons auf verschiedenen Linux-Desktop-Umgebungen](https://github.com/robatsh/Task-und-Zeiterfassungstool/wiki/Installation-des-Tray%E2%80%90Icons-auf-verschiedenen-Linux-Desktop%E2%80%90Umgebungen)
   - **Windows:** Funktioniert mit den Standard-Desktop-Umgebungen.
 - **Eingeklappte Größe (`collwin`)**:
   - Breite: 600 Pixel
