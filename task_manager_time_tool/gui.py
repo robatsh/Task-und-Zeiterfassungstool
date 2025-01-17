@@ -164,7 +164,6 @@ class TaskGUI(tk.Tk):
 
         # Zusätzliche Einträge
         menu_items.append(MenuItem("Öffnen", self._open_callback))
-        menu_items.append(MenuItem("Beenden", self._quit_callback))
 
         return Menu(*menu_items)
 
