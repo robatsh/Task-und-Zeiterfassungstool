@@ -24,6 +24,9 @@ Ein flexibles Tool für Aufgaben- und Zeiterfassung mit benutzerfreundlicher CLI
 - **GUI starten:** `python3 main.py gui`
 - **Design:** Schwarzer Hintergrund mit VGA-Orange (#ffb347) als Textfarbe.
 - **Minimierung:** Minimiert Fenster in die System-Tray statt es zu schließen.
+- **Plattformunterstützung:**
+  - **Linux:**  ggf. Installation von `libappindicator3-1` erforderlich (z. B. über `sudo apt install libappindicator3-1`).
+  - **Windows:** Funktioniert mit den Standard-Desktop-Umgebungen.
 - **Eingeklappte Größe (`collwin`)**:
   - Breite: 600 Pixel
   - Höhe: 25 Pixel
@@ -31,8 +34,16 @@ Ein flexibles Tool für Aufgaben- und Zeiterfassung mit benutzerfreundlicher CLI
   - Breite: 600 Pixel
   - Höhe: 400 Pixel
 
+
 **Screenshot:**
+
+GUI:
+
 ![GUI Screenshot](assets/screen-gui.png)
+
+Tray:
+
+![GUI Screenshot](assets/screen-gui-2.png)
 
 #### Datenbank
 - SQLite-basierte Speicherung (`tasks.db`).
