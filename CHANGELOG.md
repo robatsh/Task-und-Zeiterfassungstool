@@ -9,9 +9,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 - **Bootstrap-Integration:** HTML-Berichts-Template aktualisiert, um Bootstrap für ein modernes Styling zu nutzen.
 
 ### Aktualisiert
-- **Template-Bericht:** Darstellung der HTML-Berichte mit Bootstrap-Tabellen für bessere Lesbarkeit und modernes Design.
 - **Fehlermeldungen:** Verbesserte Fehlerbehandlung und Ausgabe bei nicht existierenden Tasks oder falschen Eingaben.
-- **Kommando "collwin":** Befehl hinzugefügt, um die GUI-Ausgabe ein- und auszuklappen.
 
 ### Behoben
 - **Datenbank-Initialisierung:** Sicherstellung, dass alle Tabellen korrekt erstellt werden, falls sie fehlen.
