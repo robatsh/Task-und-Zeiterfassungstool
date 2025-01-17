@@ -32,7 +32,14 @@ Ein flexibles Tool für Aufgaben- und Zeiterfassung mit benutzerfreundlicher CLI
   - Höhe: 400 Pixel
 
 **Screenshot:**
+
+GUI:
+
 ![GUI Screenshot](assets/screen-gui.png)
+
+Tray:
+
+![GUI Screenshot](assets/screen-gui-2.png)
 
 #### Datenbank
 - SQLite-basierte Speicherung (`tasks.db`).
