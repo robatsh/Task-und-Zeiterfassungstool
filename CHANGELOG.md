@@ -2,6 +2,21 @@
 
 Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## [1.2.0] - 2025-01-17
+### Hinzugefügt
+- **Neue GUI-Funktionalität:** Tray-Icon hinzugefügt, um die GUI zu minimieren und Aufgaben direkt über das Tray-Menü zu starten oder zu stoppen.
+- **Tray-Icon-Callbacks:** Dynamisches Tray-Menü mit Task-Status und Aktionen.
+- **Bootstrap-Integration:** HTML-Berichts-Template aktualisiert, um Bootstrap für ein modernes Styling zu nutzen.
+
+### Aktualisiert
+- **Template-Bericht:** Darstellung der HTML-Berichte mit Bootstrap-Tabellen für bessere Lesbarkeit und modernes Design.
+- **Fehlermeldungen:** Verbesserte Fehlerbehandlung und Ausgabe bei nicht existierenden Tasks oder falschen Eingaben.
+- **Kommando "collwin":** Befehl hinzugefügt, um die GUI-Ausgabe ein- und auszuklappen.
+
+### Behoben
+- **Datenbank-Initialisierung:** Sicherstellung, dass alle Tabellen korrekt erstellt werden, falls sie fehlen.
+- **Fehlende Sicherheitsabfragen:** GUI-Sicherheitsabfragen für Task-Löschvorgänge hinzugefügt.
+
 ## [Unreleased]
 - Kleinere Fehlerbehebungen und Verbesserungen.
 

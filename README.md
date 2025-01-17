@@ -16,20 +16,22 @@ Ein flexibles Tool für Aufgaben- und Zeiterfassung mit benutzerfreundlicher CLI
 - `list`: Zeigt eine Übersicht aller Tasks und deren Status.
 - `report [start=<YYYY-MM-DD> end=<YYYY-MM-DD> task=<taskname>]`: Generiert einen Bericht über Tasks und Sessions (optional mit Filtern).
 - `export <output_path> [start=<YYYY-MM-DD> end=<YYYY-MM-DD> task=<taskname>]`: Exportiert einen HTML-Bericht (optional mit Filtern).
-- `collwin` (nur GUI): Klappt das Ausgabefeld ein oder aus.
+- `collwin`: Klappt das Ausgabefeld in der GUI ein oder aus.
+- `help`: Zeigt eine Liste aller verfügbaren Befehle.
 
 #### GUI-Eigenschaften
-- **GUI starten:** main.py gui 
+- **Tray-Icon:** Minimierung der GUI in die System-Tray mit Optionen, um Tasks direkt zu starten/stoppen.
+- **GUI starten:** `python3 main.py gui`
 - **Design:** Schwarzer Hintergrund mit VGA-Orange (#ffb347) als Textfarbe.
-- **Minimierung:** Minimiert Fenster statt es zu schließen.
+- **Minimierung:** Minimiert Fenster in die System-Tray statt es zu schließen.
 - **Eingeklappte Größe (`collwin`)**:
   - Breite: 600 Pixel
-  - Höhe: 100 Pixel
+  - Höhe: 25 Pixel
 - **Normale Größe:**
   - Breite: 600 Pixel
   - Höhe: 400 Pixel
 
-Screenshot:
+**Screenshot:**
 ![GUI Screenshot](assets/screen-gui.png)
 
 #### Datenbank
@@ -39,18 +41,24 @@ Screenshot:
   - `tasks(id, name, is_running, current_start, minimum_minutes)`
   - `sessions(id, task_id, start, end, duration_sec)`
 
+#### Berichte
+- **HTML-Berichte:** Mit Bootstrap-stilisierten Tabellen für bessere Lesbarkeit.
+- **Dynamische Pfade:** Automatische Generierung von Berichtsdateien mit Zeitstempel.
+
 ## Installation
 
 ### Voraussetzungen
 - **Python 3.7 oder neuer** (inklusive Standardmodule: `sqlite3`, `tkinter`, `datetime`)
 - Zusätzliche Python-Pakete:
   - `jinja2`: Für HTML-Template-Rendering
+  - `pystray`: Für das Tray-Icon der GUI
+  - `Pillow`: Für die Generierung des Tray-Icons
 
 ### Installation der Abhängigkeiten
 #### Linux:
 ```bash
 sudo apt update && sudo apt install python3 python3-pip python3-tk
-pip3 install jinja2
+pip3 install jinja2 pystray Pillow
 ```
 
 #### Windows:
@@ -59,7 +67,7 @@ pip3 install jinja2
    - Während der Installation die Option „Add Python to PATH“ aktivieren.
 2. Installiere die Abhängigkeiten:
    ```cmd
-   pip install jinja2
+   pip install jinja2 pystray Pillow
    ```
 
 ### Überprüfung der Installation

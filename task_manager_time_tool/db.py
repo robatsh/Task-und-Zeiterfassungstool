@@ -1,6 +1,7 @@
+# db.py
 import sqlite3
-import tkinter.messagebox as messagebox
-import datetime, os
+import datetime
+import os
 from jinja2 import Template
 
 DB_NAME = "tasks.db"
@@ -110,6 +111,10 @@ def stop_task(taskname, output_func=print):
     output_func(f"Task '{taskname}' wurde gestoppt. Dauer: {duration / 60:.2f} Minuten.")
 
 def delete_task(taskname, output_func=print, is_gui=False):
+    """
+    Löscht den Task direkt, ohne MessageBox.
+    Die Sicherheitsabfrage übernehmen wir in der GUI (pending_delete).
+    """
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
     cur.execute("SELECT id FROM tasks WHERE name = ?", (taskname,))
@@ -119,22 +124,14 @@ def delete_task(taskname, output_func=print, is_gui=False):
         conn.close()
         return
 
-    if is_gui:
-        confirm = messagebox.askyesno("Task löschen", f"Willst du den Task '{taskname}' wirklich löschen?")
-    else:
-        confirm_input = input(f"Willst du den Task '{taskname}' wirklich löschen? (y/n): ").strip().lower()
-        confirm = confirm_input in ["y", "yes"]
-
-    if confirm:
-        task_id = task_row[0]
-        cur.execute("DELETE FROM sessions WHERE task_id = ?", (task_id,))
-        cur.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
-        conn.commit()
-        output_func(f"Task '{taskname}' wurde gelöscht.")
-    else:
-        output_func("Löschen abgebrochen.")
-
+    # Hier KEINE Interaktion mit tkinter.messagebox oder input().
+    # Wir verlassen uns darauf, dass GUI/CLI bereits "y" abgefragt hat.
+    task_id = task_row[0]
+    cur.execute("DELETE FROM sessions WHERE task_id = ?", (task_id,))
+    cur.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+    conn.commit()
     conn.close()
+    output_func(f"Task '{taskname}' wurde gelöscht.")
 
 def list_tasks(output_func=print):
     conn = sqlite3.connect(DB_NAME)
@@ -154,11 +151,6 @@ def list_tasks(output_func=print):
 def report_tasks_filtered(start_date=None, end_date=None, task_name=None, output_func=print):
     """
     Generiert einen Bericht basierend auf optionalem Zeitraum und Task.
-
-    :param start_date: Startdatum (YYYY-MM-DD)
-    :param end_date: Enddatum (YYYY-MM-DD)
-    :param task_name: Name des Tasks (optional)
-    :param output_func: Funktion für die Ausgabe (z. B. print)
     """
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
@@ -188,39 +180,29 @@ def report_tasks_filtered(start_date=None, end_date=None, task_name=None, output
 
     cur.execute(query, params)
     sessions = cur.fetchall()
+    conn.close()
 
     if not sessions:
         output_func("Keine Sitzungen gefunden.")
-        conn.close()
         return
 
     output_func("Bericht:")
-    for task_name, start, end, duration_sec in sessions:
+    for tname, start, end, duration_sec in sessions:
         duration_min = duration_sec / 60
-        output_func(f"Task: {task_name}, Start: {start}, Ende: {end}, Dauer: {duration_min:.2f} Minuten")
-
-    conn.close()
+        output_func(f"Task: {tname}, Start: {start}, Ende: {end}, Dauer: {duration_min:.2f} Minuten")
 
 def export_report_to_html(output_path=None, start_date=None, end_date=None, task_name=None):
     """
     Exportiert den Bericht als HTML.
-
-    :param output_path: Pfad für die HTML-Datei (optional, Standard: "./report_<timestamp>.html")
-    :param start_date: Startdatum (YYYY-MM-DD)
-    :param end_date: Enddatum (YYYY-MM-DD)
-    :param task_name: Name des Tasks (optional)
     """
-    from jinja2 import Template  # Sicherstellen, dass Template verfügbar ist
-
-    # Generiere einen einzigartigen Dateinamen, falls keiner angegeben wurde
+    import datetime
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     if not output_path:
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
         output_path = f"./report_{timestamp}.html"
 
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
 
-    # Filterlogik für SQL-Abfrage
     task_filter = ""
     params = []
 
@@ -246,14 +228,13 @@ def export_report_to_html(output_path=None, start_date=None, end_date=None, task
 
     cur.execute(query, params)
     sessions = cur.fetchall()
-
     conn.close()
 
     if not sessions:
         print("Keine Sitzungen gefunden.")
         return
 
-    # Template aus externer Datei laden
+    # Template laden
     try:
         with open("template_report.html", "r", encoding="utf-8") as template_file:
             template_content = template_file.read()
@@ -264,7 +245,6 @@ def export_report_to_html(output_path=None, start_date=None, end_date=None, task
     template = Template(template_content)
     html_content = template.render(sessions=sessions)
 
-    # Sicherstellen, dass die Datei nicht überschrieben wird
     if os.path.exists(output_path):
         print(f"Die Datei '{output_path}' existiert bereits. Bericht wird nicht überschrieben.")
         return
@@ -273,4 +253,3 @@ def export_report_to_html(output_path=None, start_date=None, end_date=None, task
         html_file.write(html_content)
 
     print(f"Bericht wurde erfolgreich als HTML exportiert: {output_path}")
-
